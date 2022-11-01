@@ -9,6 +9,9 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    // делает статус бар тёмным вне зависимости от темы
+    override var preferredStatusBarStyle: UIStatusBarStyle { .darkContent }
+    
     @IBOutlet weak var h10: UIButton!
     @IBOutlet weak var h9: UIButton!
     @IBOutlet weak var h8: UIButton!
@@ -20,12 +23,17 @@ class ViewController: UIViewController {
     @IBOutlet weak var h2: UIButton!
     @IBOutlet weak var h1: UIButton!
     @IBOutlet weak var h0: UIButton!
-    
-    // делает статус бар светлым (у нас всегда темный фон и поэтому внезависимости от темы афйона статус бар будет светлым)
-    override var preferredStatusBarStyle: UIStatusBarStyle { .darkContent }
     var hearts: [UIButton] = []
-    var coinTemp = 0
-    var lightningTemp = 0
+    
+    // перменные для хранения последнего значения (нужны если пользователь случайно обнулит значение)
+    var coinLast = 0
+    var lightningLast = 0
+    
+    @IBOutlet weak var lightningLabel: UILabel!
+    var lightningCount = 0
+    
+    @IBOutlet weak var coinLabel: UILabel!
+    var coinCount = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,48 +52,48 @@ class ViewController: UIViewController {
         hideImages()
     }
     
-    @IBOutlet weak var lightningLabel: UILabel!
-    var coinCount = 0
-    @IBOutlet weak var coinLabel: UILabel!
-    var lightningCount = 0
-    
-    @IBAction func lightningReset(_ sender: Any) {
-        lightningCount = 0
-        lightningLabel.text = "\(lightningCount)"
-    }
-    @IBAction func coinReset(_ sender: Any) {
-        coinCount = 0
-        coinLabel.text = "\(coinCount)"
-    }
+    // прячет изображение сердца у каждой кнопки
     func hideImages(){
-        
         for heart in hearts {
             heart.setImage(UIImage.init(), for: UIControl.State.normal)
         }
     }
     
-    @IBAction func lightningClick(_ sender: Any) {
-       lightningCount += 1
-        lightningTemp = lightningCount
-        lightningLabel.text = "\(lightningCount)"
-    }
-    
-    @IBAction func coinClick(_ sender: Any) {
-        coinCount += 1
-        coinTemp = coinCount
-        coinLabel.text = "\(coinCount)"
-    }
-    
+    // показ изображения сердца
     @IBAction func heartClick(_ sender: UIButton) {
         hideImages()
         sender.setImage(UIImage(named: "heart"), for: UIControl.State.normal)
     }
-    @IBAction func lightningRestore(_ sender: Any) {
-        lightningCount = lightningTemp
+    
+    @IBAction func lightningClick() {
+       lightningCount += 1
+        lightningLast = lightningCount
         lightningLabel.text = "\(lightningCount)"
     }
-    @IBAction func coinRestore(_ sender: Any) {
-        coinCount = coinTemp
+    
+    @IBAction func coinClick() {
+        coinCount += 1
+        coinLast = coinCount
+        coinLabel.text = "\(coinCount)"
+    }
+    
+    @IBAction func lightningReset() {
+        lightningCount = 0
+        lightningLabel.text = "\(lightningCount)"
+    }
+    
+    @IBAction func coinReset() {
+        coinCount = 0
+        coinLabel.text = "\(coinCount)"
+    }
+    
+    @IBAction func lightningRestore() {
+        lightningCount = lightningLast
+        lightningLabel.text = "\(lightningCount)"
+    }
+    
+    @IBAction func coinRestore() {
+        coinCount = coinLast
         coinLabel.text = "\(coinCount)"
     }
 }
