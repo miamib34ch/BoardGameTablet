@@ -1,4 +1,3 @@
 # BoardGameTablet
-Player's tablet for the board game "Hogwarts battle"
+The layout is suitable for most iPads. The size of the game tablet is fixed.
 
-Layout made for iPad 8th generation
